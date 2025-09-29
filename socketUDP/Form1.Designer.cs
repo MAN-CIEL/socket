@@ -100,6 +100,7 @@
             this.buttonCreate.TabIndex = 6;
             this.buttonCreate.Text = "Créer Socket et Bind (IPeR)";
             this.buttonCreate.UseVisualStyleBackColor = true;
+            this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click_1);
             // 
             // buttonClose
             // 

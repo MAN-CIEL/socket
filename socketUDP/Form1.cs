@@ -28,41 +28,111 @@ namespace socketUDP
         {
             try
             {
+                if (SSockUDP != null)
+                {
+                    textBoxReception.AppendText("Socket déjà créé.\n");
+                    return;
+                }
+
                 SSockUDP = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 IPedR = new IPEndPoint(IPAddress.Parse(textBoxIpReception.Text), int.Parse(textBoxPortReception.Text));
                 SSockUDP.Bind(IPedR);
+
                 textBoxReception.AppendText("Socket UDP créé et lié.\n");
+            }
+            catch (SocketException se)
+            {
+                textBoxReception.AppendText("Erreur socket : " + se.Message + "\n");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erreur création socket : " + ex.Message);
+                textBoxReception.AppendText("Erreur générale : " + ex.Message + "\n");
             }
         }
 
+
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            var msg = Encoding.ASCII.GetBytes(textBoxMessage.Text);
-            IPedD = new IPEndPoint(IPAddress.Parse(textBoxIpDestination.Text), int.Parse(textBoxPortDestination.Text));
-            SSockUDP.SendTo(msg, IPedD);
+            try
+            {
+                if (SSockUDP == null)
+                {
+                    textBoxReception.AppendText("Erreur : socket non créé.\n");
+                    return;
+                }
+
+                var msg = Encoding.ASCII.GetBytes(textBoxMessage.Text);
+                IPedD = new IPEndPoint(IPAddress.Parse(textBoxIpDestination.Text), int.Parse(textBoxPortDestination.Text));
+                SSockUDP.SendTo(msg, IPedD);
+
+                textBoxReception.AppendText("Message envoyé.\n");
+            }
+            catch (SocketException se)
+            {
+                textBoxReception.AppendText("Erreur socket : " + se.Message + "\n");
+            }
+            catch (Exception ex)
+            {
+                textBoxReception.AppendText("Erreur générale : " + ex.Message + "\n");
+            }
         }
+
 
         private void buttonReceive_Click(object sender, EventArgs e)
         {
-            var buffer = new byte[1024];
-            EndPoint epFrom = new IPEndPoint(IPAddress.Any, 0);
-            int bytes = SSockUDP.ReceiveFrom(buffer, ref epFrom);
-            textBoxReception.AppendText(Encoding.ASCII.GetString(buffer, 0, bytes) + "\n");
+            try
+            {
+                if (SSockUDP == null)
+                {
+                    textBoxReception.AppendText("Erreur : socket non créé.\n");
+                    return;
+                }
+
+                var buffer = new byte[1024];
+                EndPoint epFrom = new IPEndPoint(IPAddress.Any, 0);
+                int bytes = SSockUDP.ReceiveFrom(buffer, ref epFrom);
+
+                textBoxReception.AppendText("Message reçu : " + Encoding.ASCII.GetString(buffer, 0, bytes) + "\n");
+            }
+            catch (SocketException se)
+            {
+                textBoxReception.AppendText("Erreur socket : " + se.Message + "\n");
+            }
+            catch (Exception ex)
+            {
+                textBoxReception.AppendText("Erreur générale : " + ex.Message + "\n");
+            }
         }
+
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            SSockUDP.Close();
-            textBoxReception.AppendText("Socket fermé.\n");
+            try
+            {
+                if (SSockUDP == null)
+                {
+                    textBoxReception.AppendText("Erreur : socket déjà fermé.\n");
+                    return;
+                }
+
+                SSockUDP.Close();
+                SSockUDP = null;
+                textBoxReception.AppendText("Socket fermé.\n");
+            }
+            catch (SocketException se)
+            {
+                textBoxReception.AppendText("Erreur socket : " + se.Message + "\n");
+            }
+            catch (Exception ex)
+            {
+                textBoxReception.AppendText("Erreur générale : " + ex.Message + "\n");
+            }
         }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void textBoxMessage_TextChanged(object sender, EventArgs e)
