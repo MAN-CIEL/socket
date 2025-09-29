@@ -133,12 +133,26 @@ namespace socketUDP
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            textBoxIpReception.Text = "127.0.0.1";
+            textBoxPortReception.Text = "50000";
+            textBoxIpDestination.Text = "127.0.0.1";
+            textBoxPortDestination.Text = "50000";
         }
 
         private void textBoxMessage_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (SSockUDP != null && SSockUDP.Available > 0)
+            {
+                var buffer = new byte[1024];
+                EndPoint epFrom = new IPEndPoint(IPAddress.Any, 0);
+                int bytes = SSockUDP.ReceiveFrom(buffer, ref epFrom);
+                textBoxReception.AppendText(Encoding.ASCII.GetString(buffer, 0, bytes) + "\n");
+            }
         }
     }
 }

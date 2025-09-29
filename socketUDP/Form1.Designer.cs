@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textBoxIpReception = new System.Windows.Forms.TextBox();
             this.textBoxPortDestination = new System.Windows.Forms.TextBox();
             this.textBoxPortReception = new System.Windows.Forms.TextBox();
@@ -44,6 +45,7 @@
             this.dest = new System.Windows.Forms.Label();
             this.envoi = new System.Windows.Forms.Label();
             this.recp_mess = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // textBoxIpReception
@@ -100,7 +102,6 @@
             this.buttonCreate.TabIndex = 6;
             this.buttonCreate.Text = "Créer Socket et Bind (IPeR)";
             this.buttonCreate.UseVisualStyleBackColor = true;
-            this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click_1);
             // 
             // buttonClose
             // 
@@ -183,6 +184,11 @@
             this.recp_mess.TabIndex = 15;
             this.recp_mess.Text = "Recp.";
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -230,6 +236,8 @@
         private System.Windows.Forms.Label dest;
         private System.Windows.Forms.Label envoi;
         private System.Windows.Forms.Label recp_mess;
+        private System.Windows.Forms.Timer timer1;
+        //private System.Windows.Forms.Timer timer1;
     }
 }
 
