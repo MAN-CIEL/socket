@@ -37,6 +37,7 @@ namespace socketUDP
                 SSockUDP = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 IPedR = new IPEndPoint(IPAddress.Parse(textBoxIpReception.Text), int.Parse(textBoxPortReception.Text));
                 SSockUDP.Bind(IPedR);
+                SSockUDP.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 10000);
 
                 textBoxReception.AppendText("Socket UDP créé et lié.\n");
             }
